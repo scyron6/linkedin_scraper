@@ -21,9 +21,10 @@ def get_contacts():
     connections = json.loads(response.text)
     for connection in connections.get('included'):
         if 'publicIdentifier' in connection:
-            profiles.append(connection.get('publicIdentifier'))
-
-    for profile in profiles:
-        print(profile)
+            name = connection.get('firstName') + ' ' + connection.get('lastName') + ', '
+            response = s.get('https://www.linkedin.com/voyager/api/identity/profiles/' + connection.get('publicIdentifier') + '/profileContactInfo', headers=get_headers)
+            contact_info = json.loads(response.text)
+            name += contact_info.get('data').get('emailAddress')
+            print(name)
 
     return contacts
