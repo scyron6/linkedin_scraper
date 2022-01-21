@@ -1,10 +1,15 @@
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 from scrape import get_contacts
 
-data_file = 'linkedin_scraper/contacts.xlsx'
+filepath = 'contacts.xlsx'
 
-wb = load_workbook(data_file, data_only=True)
-ws = wb['Sheet1']
+try:
+    wb = load_workbook(data_file, data_only=True)
+    ws = wb['Sheet']
+except:
+    wb = Workbook()
+    ws = wb.active
+    ws.append(['Name', 'Email'])
 
 # Delete all Rows other than Headers
 while (ws.max_row > 1):
@@ -14,4 +19,4 @@ while (ws.max_row > 1):
 for contact in get_contacts():
     ws.append([contact[0],contact[1]])
 
-wb.save(filename=data_file)
+wb.save(filename=filepath)
