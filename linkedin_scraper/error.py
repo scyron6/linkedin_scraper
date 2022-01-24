@@ -10,3 +10,9 @@ class HTMLError(Exception):
     def __init__(self, message="Cannot complete HTML requests. Unknown Error"):
         self.message = message
         super().__init__(self.message)
+
+class NoConnectionsError(Exception):
+    """No connections found"""
+    def __init__(self, message="No connections found"):
+        self.message = message
+        super().__init__(self.message)

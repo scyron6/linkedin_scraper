@@ -1,22 +1,12 @@
-from openpyxl import load_workbook, Workbook
-from scrape import get_contacts
+from Scrape import Scraper
+from Excel import Excel
 
-filepath = 'contacts.xlsx'
+workbook = Excel('contacts.xlsx')
 
-try:
-    wb = load_workbook(data_file, data_only=True)
-    ws = wb['Sheet']
-except:
-    wb = Workbook()
-    ws = wb.active
-    ws.append(['Name', 'Email'])
+contacts = Scraper().get_contacts()
 
-# Delete all Rows other than Headers
-while (ws.max_row > 1):
-    ws.delete_rows(2)
-
-# Scrape and Append Rows
-for contact in get_contacts():
-    ws.append([contact[0],contact[1]])
-
-wb.save(filename=filepath)
+if contacts:
+    workbook.clear_sheet()
+    workbook.write_contacts(contacts)
+else:
+    raise NoConnectionsError
