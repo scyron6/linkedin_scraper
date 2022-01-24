@@ -1,3 +1,12 @@
 class AuthenticationError(Exception):
     """Unable to login to LinkedIn"""
-    pass
+
+    def __init__(self, message="Unable to login to LinkedIn"):
+        self.message = message
+        super().__init__(self.message)
+
+class HTMLError(Exception):
+    """Unable to complete HTML requests"""
+    def __init__(self, message="Cannot complete HTML requests. Unknown Error"):
+        self.message = message
+        super().__init__(self.message)
