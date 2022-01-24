@@ -1,12 +1,13 @@
-from Scrape import Scraper
-from Excel import Excel
+from .scrape import Scraper
+from .excel import Excel
 
-workbook = Excel('contacts.xlsx')
+def main():
+    workbook = Excel('contacts.xlsx')
 
-contacts = Scraper().get_contacts()
+    contacts = Scraper().get_contacts()
 
-if contacts:
-    workbook.clear_sheet()
-    workbook.write_contacts(contacts)
-else:
-    raise NoConnectionsError
+    if contacts:
+        workbook.clear_sheet()
+        workbook.write_contacts(contacts)
+    else:
+        raise NoConnectionsError

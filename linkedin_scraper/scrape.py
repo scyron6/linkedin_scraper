@@ -4,7 +4,7 @@ import os
 from dotenv import load_dotenv
 from bs4 import BeautifulSoup
 
-from error import AuthenticationError, HTMLError
+from .error import AuthenticationError, HTMLError
 
 class Scraper:
     def __init__(self):
