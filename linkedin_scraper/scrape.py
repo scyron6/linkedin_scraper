@@ -16,8 +16,10 @@ def get_contacts():
     login_response = s.post('https://www.linkedin.com/uas/login-submit', data=data)
     soup = BeautifulSoup(login_response.text, "html.parser")
     title = soup.find('title').string
-    if "Login" in title or login_response.status_code != 200:
+    if "Login" in title:
         raise AuthenticationError
+    if (login_response.status_code != 200):
+        raise HTMLError
     
     get_headers['csrf-token'] = s.cookies.get('JSESSIONID')[1:-1]
     response = s.get('https://www.linkedin.com/voyager/api/relationships/dash/connections', headers=get_headers, params=get_params)
