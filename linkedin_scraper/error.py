@@ -16,3 +16,9 @@ class NoConnectionsError(Exception):
     def __init__(self, message="No connections found"):
         self.message = message
         super().__init__(self.message)
+
+class InvalidWorkbookError(Exception):
+    """Excel sheet has improper headers or data"""
+    def __init__(self, message="Improper excel sheet"):
+        self.message = message
+        super().__init__(self.message)

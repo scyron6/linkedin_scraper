@@ -1,6 +1,6 @@
 import os
 
-from openpyxl import load_workbook
+from openpyxl import load_workbook, Workbook
 from linkedin_scraper.excel import Excel
 
 filename = 'newfile.xlsx'
@@ -67,4 +67,44 @@ def test_write_contacts_writes_two_contacts():
     assert ws.cell(row=3, column=1).value == 'mark'
     assert ws.cell(row=3, column=2).value == 'mark@gmail.com'
 
+    os.remove(filename)
+
+# validate_excel overwrites file if passed improper .xlsx
+def test_validate_excel_rewrites_file_if_bad_headers():
+    wb = Workbook()
+    ws = wb.active
+    ws.append(['Not', 'Header'])
+    wb.save(filename=filename)
+
+    assert ws.cell(row=1, column=1).value == 'Not'
+    assert ws.cell(row=1, column=2).value == 'Header'
+
+    workbook = Excel(filename)
+    ws = workbook.wb.active
+
+    assert ws.cell(row=1, column=1).value == 'Name'
+    assert ws.cell(row=1, column=2).value == 'Email'
+    assert ws.max_row == 1
+    assert ws.max_column == 2
+    os.remove(filename)
+
+# validate_excel overwrites file if passed improper .xlsx
+def test_validate_excel_rewrites_file_if_3_columns():
+    wb = Workbook()
+    ws = wb.active
+    ws.append(['Name', 'Email'])
+    ws.append(['stephen', 'test@email', 'extra'])
+    wb.save(filename=filename)
+
+    assert ws.cell(row=1, column=1).value == 'Name'
+    assert ws.cell(row=1, column=2).value == 'Email'
+    assert ws.max_column == 3
+
+    workbook = Excel(filename)
+    ws = workbook.wb.active
+
+    assert ws.cell(row=1, column=1).value == 'Name'
+    assert ws.cell(row=1, column=2).value == 'Email'
+    assert ws.max_row == 1
+    assert ws.max_column == 2
     os.remove(filename)
