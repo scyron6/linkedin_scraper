@@ -32,7 +32,6 @@ class Excel:
     def validate_excel(self):
         ws = self.wb.active
         
-        # Validate excel
         if ws.max_column > 2:
             raise InvalidWorkbookError
 
